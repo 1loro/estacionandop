@@ -61,13 +61,19 @@
   a{ color:var(--accent) }
   .wrap{ max-width:1180px; margin:0 auto; padding-inline:20px }
 
+  /* Mobile-first: everything below is written for a narrow phone by default, then
+     upgraded for wider screens inside @media (min-width: …) blocks. This guarantees the
+     stacked, single-column phone layout is the unconditional default rather than something
+     a max-width override has to successfully cancel out of a desktop layout. */
+
   header.hero{ border-bottom:1px solid var(--line); background:var(--surface); }
-  header.hero .wrap{ padding-block:32px 26px }
-  .hero-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
-  .kicker{ font-size:.86rem; color:var(--muted); }
-  header.hero h1{ font-size:clamp(1.8rem, 4.2vw, 2.5rem); font-weight:800; letter-spacing:-.02em; margin-top:10px; }
+  header.hero .wrap{ padding-block:22px 18px }
+  .hero-top{ display:flex; flex-direction:column; align-items:flex-start; gap:14px; }
+  .hero-top > div{ min-width:0; width:100%; }
+  .kicker{ font-size:.8rem; color:var(--muted); }
+  header.hero h1{ font-size:clamp(1.55rem, 7vw, 2.5rem); font-weight:800; letter-spacing:-.02em; margin-top:8px; }
   header.hero h1 .dot{ color:var(--accent) }
-  header.hero p.tagline{ margin-top:10px; font-size:1.03rem; color:var(--muted); max-width:70ch; }
+  header.hero p.tagline{ margin-top:10px; font-size:.95rem; color:var(--muted); max-width:70ch; }
 
   .theme-toggle{
     flex-shrink:0; display:inline-flex; align-items:center; gap:7px; cursor:pointer;
@@ -77,28 +83,43 @@
   .theme-toggle:hover{ border-color:var(--accent-soft); background:var(--accent-soft); }
   .theme-toggle svg{ width:15px; height:15px; flex-shrink:0; }
 
-  .live-links{ margin-top:20px; display:flex; flex-wrap:wrap; gap:8px; }
+  .live-links{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
   .live-link{
-    display:inline-flex; align-items:center; gap:7px;
+    display:inline-flex; align-items:center; gap:7px; max-width:100%;
     border:1px solid var(--line); background:var(--surface-2); border-radius:999px;
-    padding:7px 12px 7px 9px; font-size:.82rem; font-weight:500; text-decoration:none; color:var(--ink);
+    padding:7px 12px 7px 9px; font-size:.8rem; font-weight:500; text-decoration:none; color:var(--ink);
   }
+  .live-link .mono{ color:var(--muted); font-size:.76rem; overflow:hidden; text-overflow:ellipsis; }
   .live-dot{ width:7px; height:7px; border-radius:50%; background:var(--good); flex-shrink:0; box-shadow:0 0 0 3px var(--good-soft); }
-  .live-link .mono{ color:var(--muted); font-size:.78rem; }
 
   main{ padding-block:0 }
-  .doc-shell{ display:grid; grid-template-columns:240px minmax(0,1fr); gap:48px; padding-block:32px 80px; align-items:start; }
-  @media (max-width:860px){ .doc-shell{ grid-template-columns:1fr } }
+  .doc-shell{ display:grid; grid-template-columns:minmax(0,1fr); gap:22px; padding-block:22px 56px; align-items:start; }
 
-  nav.toc{ position:sticky; top:20px; display:flex; flex-direction:column; gap:1px; max-height:calc(100vh - 40px); overflow-y:auto; }
-  @media (max-width:860px){
-    nav.toc{ position:static; flex-direction:row; flex-wrap:wrap; gap:6px; margin-bottom:8px; max-height:none; }
-    nav.toc a{ border:1px solid var(--line); border-radius:10px; padding:6px 11px !important; }
-    nav.toc .toc-group{ display:contents; }
-  }
-  nav.toc .toc-label{ font-size:.78rem; color:var(--muted); margin:14px 0 6px; }
+  nav.toc{ position:static; display:flex; flex-direction:row; flex-wrap:wrap; gap:6px; max-height:none; overflow:visible; }
+  nav.toc a{ border:1px solid var(--line); border-radius:10px; padding:6px 11px; }
+  nav.toc .toc-group{ display:contents; }
+  nav.toc .toc-label{ font-size:.76rem; color:var(--muted); width:100%; margin:6px 0 1px; }
   nav.toc .toc-label:first-child{ margin-top:0; }
-  @media (max-width:860px){ nav.toc .toc-label{ width:100%; margin:4px 0 2px } }
+
+  @media (min-width:640px){
+    header.hero .wrap{ padding-block:32px 26px }
+    .hero-top{ flex-direction:row; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; }
+    .hero-top > div{ flex:1 1 260px; width:auto; }
+    .kicker{ font-size:.86rem; }
+    header.hero p.tagline{ font-size:1.03rem; }
+    .live-link .mono{ font-size:.78rem; }
+  }
+
+  @media (min-width:860px){
+    .doc-shell{ grid-template-columns:240px minmax(0,1fr); gap:48px; padding-block:32px 80px; }
+    nav.toc{
+      position:sticky; top:20px; flex-direction:column; flex-wrap:nowrap; gap:1px;
+      max-height:calc(100vh - 40px); overflow-y:auto;
+    }
+    nav.toc a{ border:none; border-radius:8px; padding:6px 8px; }
+    nav.toc .toc-label{ width:auto; margin:14px 0 6px; }
+    nav.toc .toc-label:first-child{ margin-top:0; }
+  }
   nav.toc a{ color:var(--muted); text-decoration:none; font-size:.87rem; padding:6px 8px; border-radius:8px; display:flex; gap:8px; line-height:1.4; }
   nav.toc a:hover{ color:var(--ink); background:var(--surface-2); }
   nav.toc a .n{ color:var(--accent); font-variant-numeric:tabular-nums; flex-shrink:0; }
@@ -134,39 +155,45 @@
   .example .row.total{ background:var(--surface-2); font-weight:600; }
   .example .row span:last-child{ font-family:'Geist Mono', monospace; font-variant-numeric:tabular-nums; }
 
-  table.spec{ margin-top:14px; border-collapse:collapse; font-size:.88rem; max-width:100%; }
+  .table-wrap{ margin-top:14px; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table.spec{ border-collapse:collapse; font-size:.88rem; width:100%; min-width:480px; }
   table.spec th, table.spec td{ text-align:left; padding:7px 14px 7px 0; border-bottom:1px solid var(--line); vertical-align:top; }
   table.spec th{ color:var(--muted); font-weight:600; font-size:.82rem; }
   table.spec td code{ font-size:.85em; background:var(--surface-2); padding:1px 5px; border-radius:5px; }
 
-  /* stack cards (sección 01) */
-  .stack-grid{ display:grid; gap:14px; grid-template-columns:repeat(2, minmax(0,1fr)); margin-top:16px; }
-  @media (max-width:680px){ .stack-grid{ grid-template-columns:1fr } }
-  .stack-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px 20px; box-shadow:var(--shadow); }
+  /* stack cards (sección 01) — 1 columna por defecto (celular), 2 desde 680px */
+  .stack-grid{ display:grid; gap:14px; grid-template-columns:minmax(0,1fr); margin-top:16px; }
+  @media (min-width:680px){ .stack-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  .stack-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow); }
   .stack-card .layer{ font-size:.72rem; font-weight:600; color:var(--muted); }
   .stack-card h3{ margin-top:6px; font-size:1.05rem; }
   .stack-card p.role{ margin-top:6px; font-size:.89rem; color:var(--muted); line-height:1.55; }
   .pill-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
   .pill{ font-size:.78rem; padding:3px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); white-space:nowrap; color:var(--muted); }
 
-  /* pipeline de despliegue (sección 02) */
+  /* pipeline de despliegue (sección 02) — cada nodo ocupa el ancho completo por defecto */
   .pipeline{ display:flex; flex-direction:column; align-items:stretch; gap:0; max-width:640px; margin:16px auto 0; }
   .stage{ display:flex; flex-direction:column; align-items:center; gap:0; }
-  .stage-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; width:100%; }
-  .node{ flex:1 1 260px; max-width:320px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow); text-align:left; }
-  .node .platform{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .stage-row{ display:flex; flex-direction:column; width:100%; gap:14px; }
+  .node{ width:100%; max-width:100%; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow); text-align:left; }
+  .node .platform{ display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
   .node .platform b{ font-size:1rem; }
-  .node .badge{ font-size:.7rem; font-weight:600; padding:3px 9px; border-radius:999px; }
+  .node .badge{ font-size:.7rem; font-weight:600; padding:3px 9px; border-radius:999px; white-space:nowrap; }
   .badge.live{ background:var(--good-soft); color:var(--good); }
   .badge.cloud{ background:var(--accent-soft); color:var(--accent); }
   .node p.hosts{ margin-top:6px; font-size:.87rem; color:var(--muted); }
-  .node a.node-link{ display:inline-block; margin-top:8px; font-family:'Geist Mono', monospace; font-size:.78rem; text-decoration:none; }
+  .node a.node-link{ display:inline-block; margin-top:8px; font-family:'Geist Mono', monospace; font-size:.78rem; text-decoration:none; word-break:break-all; }
   .connector{ display:flex; align-items:center; justify-content:center; padding-block:8px; }
   .connector .line{ width:1px; height:22px; background:var(--line); }
 
+  @media (min-width:560px){
+    .stage-row{ flex-direction:row; flex-wrap:wrap; justify-content:center; }
+    .node{ flex:1 1 260px; max-width:320px; }
+  }
+
   /* comparación de arquitectura (sección 03) */
-  .compare{ display:grid; gap:14px; grid-template-columns:1fr 1fr; margin-top:16px; }
-  @media (max-width:680px){ .compare{ grid-template-columns:1fr } }
+  .compare{ display:grid; gap:14px; grid-template-columns:minmax(0,1fr); margin-top:16px; }
+  @media (min-width:680px){ .compare{ grid-template-columns:minmax(0,1fr) minmax(0,1fr) } }
   .compare-col{ border-radius:16px; padding:20px; }
   .compare-col.original{ background:var(--surface); border:1px solid var(--line); }
   .compare-col.final{ background:var(--surface); border:1px solid var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
@@ -488,12 +515,14 @@
     <section id="archivar">
       <div class="sec-head"><span class="n">09</span><h2>Eliminar un espacio con una reserva activa</h2></div>
       <p class="lede">Regla de negocio explícita: un dueño puede arrepentirse de ofrecer su espacio, pero no puede dejar a alguien sin el estacionamiento que ya pagó.</p>
+      <div class="table-wrap">
       <table class="spec">
         <tr><th>Estado</th><th>Significado</th></tr>
         <tr><td><code>isPublished=true</code></td><td>Visible y reservable normalmente.</td></tr>
         <tr><td><code>isPublished=false</code>, <code>archivedAt=null</code></td><td>El dueño lo pausó manualmente — puede reactivarlo.</td></tr>
         <tr><td><code>isPublished=false</code>, <code>archivedAt=&lt;fecha&gt;</code></td><td>El dueño lo eliminó, pero queda oculto (no borrado) porque debe una reserva confirmada.</td></tr>
       </table>
+      </div>
       <p style="margin-top:14px">Al "eliminar" un espacio con reservas activas, no se borra el <code>ParkingSpot</code> — se archiva. Y de sus disponibilidades futuras, solo se eliminan las que <b>no</b> tienen ninguna reserva encima (borrar una que sí la tiene arrastraría en cascada el historial de esa reserva):</p>
       <div class="code">
         <div class="file">lib/parking-spots/actions.ts</div>
@@ -540,6 +569,7 @@
     <section id="precio">
       <div class="sec-head"><span class="n">12</span><h2>Motor de precio dinámico</h2></div>
       <p class="lede">Un servicio en Java, separado del backend principal, que sugiere cuánto cobrar por hora — no con un modelo entrenado (no hay suficiente historial de reservas todavía para que eso tenga sentido), sino con una <b>heurística explicable</b>: parte de un precio base observable y lo ajusta con reglas claras.</p>
+      <div class="table-wrap">
       <table class="spec">
         <tr><th>Paso</th><th>Regla</th></tr>
         <tr><td>Precio base</td><td>Promedio de espacios publicados en la misma comuna; si no hay, el precio actual del espacio; si tampoco, un valor por defecto.</td></tr>
@@ -547,6 +577,7 @@
         <tr><td>Horario</td><td>Hora punta entre semana (8–10 / 18–20h) → <code>+10%</code> · fin de semana de día → <code>+5%</code> · madrugada → <code>−10%</code></td></tr>
         <tr><td>Límite</td><td>El resultado se acota entre 0.7× y 1.5× el precio base, para que nunca sugiera algo absurdo.</td></tr>
       </table>
+      </div>
       <div class="example">
         <div class="row"><span>Precio base (comuna)</span><span>$1.000</span></div>
         <div class="row"><span>Ocupación alta</span><span>+15%</span></div>
@@ -568,11 +599,13 @@ multiplier = Math.max(minMultiplier, Math.min(maxMultiplier, multiplier));
     <section id="ruta">
       <div class="sec-head"><span class="n">13</span><h2>Motor de optimización de ruta</h2></div>
       <p class="lede">El segundo servicio en Java no calcula rutas desde cero — orquesta las APIs de Mapbox que sí resuelven el problema real de enrutamiento vial, y expone dos operaciones distintas según la pregunta que se está haciendo:</p>
+      <div class="table-wrap">
       <table class="spec">
         <tr><th>Endpoint</th><th>Pregunta que responde</th><th>API de Mapbox</th></tr>
         <tr><td><code>/api/route/rank</code></td><td>"¿Cuál de estos espacios me queda más cerca en tiempo real de viaje?"</td><td>Matrix (hasta 24 destinos por consulta)</td></tr>
         <tr><td><code>/api/route/directions</code></td><td>"¿Cómo llego exactamente al que ya elegí?"</td><td>Directions (ruta, distancia, pasos)</td></tr>
       </table>
+      </div>
       <p style="margin-top:14px">La geometría de la ruta se devuelve como un string simple <code>"lng,lat;lng,lat;..."</code> en vez de GeoJSON completo — evita depender de una librería de tipos solo para pasar coordenadas, y el frontend la separa con un <code>split</code> para dibujar la línea en el mapa.</p>
       <div class="callout good">
         <b>Probado con coordenadas reales</b>
